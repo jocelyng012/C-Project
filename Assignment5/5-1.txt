@@ -1,0 +1,74 @@
+# Simulator: https://boginw.github.io/js-y86-64/
+# sources: textbook/ example & GPT
+
+# Execution begins at address 0
+.pos 0
+irmovq stack, %rsp # Set up stack pointer
+call main # Execute main program
+halt # Terminate program
+
+# Array of 4 elements
+.align 8
+array: .quad 0x000000000002
+.quad 0x000000000001
+.quad 0x000000000004
+.quad 0x000000000003
+
+main: irmovq array, %rdi
+irmovq $4, %rsi
+call max # max(array, 4)
+ret
+
+// long max(long *start, long count) {
+//     if (count == 0) {
+//         return -1;
+//     }
+    
+//     long result = *start;
+//     ++start;
+//     for (long i = count - 1; i != 0; --i) {
+//         long n = *start;
+//         if (n > result) {
+//             result = n;
+//         }
+//         ++start;
+//     }
+//     return result;
+// }
+
+# start in %rdi, count in %rsi
+# return in %rax, n in %rcx
+
+max:
+    andq %rsi, %rsi         # test if count == 0
+    je ret_neg1             # yes: jump to ret_neg1 return -1
+    mrmovq (%rdi), %rax     # no: set result = *start
+    iaddq $8, %rdi          # start++
+    isubq $1, %rsi          # set loop condition: count--
+
+loop:
+    andq %rsi, %rsi         # check if count == 0
+    je ret_res              # yes: jump to ret_res, return rax
+    mrmovq (%rdi), %rcx     # set n = *start
+    subq %rax, %rcx         # compare n:result
+    jg new_max              # n > result: jump 
+    
+next_num:
+    iaddq $8, %rdi          # start++
+    isubq $1, %rsi          # --i where i is count-1
+    jmp loop                # next iteration
+
+new_max:
+    mrmovq (%rdi), %rax     # set result = n(*start)
+    jmp next_num            # decrement and next iteration
+
+ret_res:
+    ret                     #return rax
+
+ret_neg1:
+    irmovq $-1, %rax        #move -1 to return register
+    ret
+
+# Stack starts here and grows to lower addresses
+.pos 0x200
+stack:

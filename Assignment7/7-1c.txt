@@ -1,0 +1,29 @@
+source: lectures Mar 5, 2025
+
+        Initial cache:
+        v tag    data
+        0 ?????  ?
+
+0x00 00000 000: tag: 00000 - cold miss
+        v tag    data
+        1 00000  [Block 0]
+
+0x08 00001 000: tag: 00001 - conflict miss
+        v tag    data
+        1 00001  [Block 1]
+
+0x10 00010 000: tag: 00010 - conflict miss
+        v tag    data
+        1 00010  [Block 2]
+
+0x18 00011 000: tag: 00011 - conflict miss
+        v tag    data
+        1 00011  [Block 3]
+
+0x00 00000 000: tag: 00000 - conflict miss
+        v tag    data
+        1 00000  [Block 0]
+
+0x10 00010 000: tag: 00010 - conflict miss
+        v tag    data
+        1 00010  [Block 2]

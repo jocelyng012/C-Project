@@ -1,0 +1,59 @@
+16B - 2 sets, direct-mapped
+
+0x00  000 0 0000: tag: 0, set: 0, offset: 0000 - cold miss
+        v tag  set  data
+        1 000  0    [block 0]
+        0 ???  1    ?
+
+0x08  000 0 1000: tag: 0, set: 0, offset: 1000 - hit
+        // no change
+
+0x10  000 1 0000: tag: 0, set: 1, offset: 0000 - cold miss
+        v tag  set  data
+        1 000  0    [block 0]
+        1 000  1    [block 1]
+
+0x20  001 0 0000: tag: 1, set: 0, offset: 0000 - conflict miss
+        v tag  set  data
+        1 001  0    [block 2]
+        1 000  1    [block 1]
+
+0x00  000 0 0000: tag: 0, set: 0, offset: 0000 - conflict miss
+        v tag  set  data
+        1 000  0    [block 0]
+        1 000  1    [block 1]
+
+0x20  001 0 0000: tag: 1, set: 0, offset: 0000 - conflict miss
+        v tag  set  data
+        1 001  0    [block 2]
+        1 000  1    [block 1]
+
+
+
+16B - two-way set associative
+
+0x00   000 0 0000: tag: 0, set: 0, offset: 0000 - cold miss
+        v tag  set  data            v tag  set  data
+        1 000  0    [block 0]       0 ???  0    ?
+        0 ???  1    ?               0 ???  1    ?
+
+0x08  000 0 1000: tag: 0, set: 0, offset: 1000 - hit
+        // no change 
+
+0x10  000 1 0000: tag: 0, set: 1, offset: 0000 - cold miss
+        v tag  set  data            v tag  set  data
+        1 000  0    [block 0]       0 ???  0    ?
+        1 000  1    [block 1]       0 ???  1    ?
+
+0x20 001 0 0000: tag: 1, set: 0, offset: 0000 - cold miss
+        v tag  set  data            v tag  set  data
+        1 000  0    [block 0]       1 001  0    [block 2]
+        1 000  1    [block 1]       0 ???  1    ?
+
+0x00 000 0 0000: tag: 0, set: 0, offset: 0000 - hit
+        v tag  set  data            v tag  set  data
+        1 000  0    [block 0]       1 001  0    [block 2]
+        1 000  1    [block 1]       0 ???  1    ?
+
+0x20 001 0 0000: tag: 1, set: 0, offset: 0000 - hit
+        // no change

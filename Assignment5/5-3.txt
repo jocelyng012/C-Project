@@ -1,0 +1,23 @@
+// sources: textbook & lab5
+
+Stage iaddq V, rB
+
+Fetch
+icode:ifun <- M1[PC]
+rA:rB <- M1[PC+1]     // destination register
+ValC <- M8[PC+2]      // 8-byte immediate value V
+ValP <- PC+10         // next instruction address: 1+1+8=10
+
+Decode
+ValB <- R[rB]         // reads values from register
+
+Execute
+ValE <- ValB + ValC   // perform addq stores valE
+
+Memory
+
+Writeback
+R[rB] <- ValE         // put valE value back to rB register
+
+PC Update
+PC <- ValP            // point to next instruction
